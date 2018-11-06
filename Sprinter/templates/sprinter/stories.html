@@ -1,0 +1,79 @@
+{% extends "/home/witek/komputerowiec/codecool/advanced/superSprinter/Sprinter/templates/sprinter/base.html" %}
+ {% block body %}
+
+<h1>{{ project }}</h1>
+{% if stories_list %}
+    <table id="table">
+        {% for story in stories_list %}
+            <tr>
+                <td>
+                    <a href=# class="edit"
+                            data-story_id="{{ story.id }}"
+                            data-title="{{ story.story_title }}"
+                            data-story="{{ story.user_story }}"
+                            data-criteria="{{ story.acceptance_criteria }}"
+                            data-business_value="{{ story.business_value }}"
+                            data-estimation="{{ story.estimation }}"
+                            data-project-name="{{ project.title }}"
+                            data-story_id="{{ story.id }}"
+                    >{{ story }}</a>
+                </td>
+                <td>
+                    <form id="deleteStory" action="{% url 'sprinter:delete_story' project.id story.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="delete" name="story_id_to_delete" value={{ story.id }}><span
+                                class="fa fa-trash"></span></button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No stories yet</p>
+{% endif %}
+<br><br>
+<button id="create">Create new story</button>
+
+
+{#modal form#}
+
+
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="storyForm" action="{% url 'sprinter:new_story' project.id %}" method="post">
+            {% csrf_token %}
+            <label for="title">Story Title:</label>
+            <br/>
+            <textarea id="title" name="story_title" rows="1" cols="80"></textarea>
+            <br/>
+            <label for="story">User Story:</label>
+            <br/>
+            <textarea id="story" name="story" rows="5" cols="80"></textarea>
+            <br/>
+            <label for="criteria">Acceptance Criteria:</label>
+            <br/>
+            <textarea id="criteria" name="criteria" rows="5" cols="80"></textarea>
+            <br/>
+            <label for="money">Business Value:</label>
+            <br/>
+            <input id="money" type="number" name="money" min="0" value=0>
+            <br/>
+            <label for="time">Estimation (h):</label>
+            <br/>
+            <input id="time" type="number" name="time" min="0.5" max="40" step="0.5" value=0.5>
+            <br/>
+            <label for="story_value">Story value:</label>
+            <br/>
+            <input id="story_value" type="number" value=0 disabled>
+            <br/>
+            <br/>
+            <button id="submitBtn" type="submit">Create</button>
+            <button type="reset">Reset</button>
+
+        </form>
+    </div>
+</div>
+ {% endblock %}

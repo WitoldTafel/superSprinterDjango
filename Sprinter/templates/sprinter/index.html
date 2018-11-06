@@ -1,0 +1,12 @@
+{% extends "/home/witek/komputerowiec/codecool/advanced/superSprinter/Sprinter/templates/sprinter/base.html" %}
+ {% block body %}
+{% if projects_list %}
+    <ul>
+    {% for project in projects_list %}
+        <li><a href="{% url 'sprinter:project_stories' project.id %}">{{ project }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No projects yet</p>
+{% endif %}
+{% endblock %}
